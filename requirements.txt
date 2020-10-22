@@ -10,7 +10,7 @@ cycler==0.10.0
 docutils==0.14
 gast==0.2.2
 gensim==3.7.1
-git+ssh://git@git.uibk.ac.at/dbis/software/dbispipeline.git@c1cc4550e8cd28c255fa875d93e5a102669bf910#egg=dbispileline
+git+https://git@git.uibk.ac.at/dbis/software/dbispipeline.git@c1cc4550e8cd28c255fa875d93e5a102669bf910#egg=dbispileline
 gitdb2==2.0.5
 gitpython==2.1.11
 grpcio==1.19.0

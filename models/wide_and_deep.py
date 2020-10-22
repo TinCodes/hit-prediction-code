@@ -65,14 +65,24 @@ class WideAndDeep(BaseEstimator, RegressorMixin):
         input_list = []
         input_type_list = []
         concat_list = []
+        # Create the input layer for the features
+        # (key, value) with features as values, number as key
         for i, feature in enumerate(self.features):
+            # split => number | part => feature
             split, part = feature
             if part is None:
                 part = 'deep'
+            # Name for layers (feature name + -input- + number)
             name = str(part) + '-input-' + str(i)
+            # Create (feature)-number of layers, with batches of (split)-dimensional of vectors as input
+            # Append input_list with input layers 
             input_list.append(Input(shape=(len(split), ), name=name))
+            # Also indicate feature type
             input_type_list.append(part)
 
+        # Join input-list + input-list-type
+        # Enumerate them into i, input-entry
+        # Deep part is processed here once (FABs)
         for i, input_entry in enumerate(zip(input_list, input_type_list)):
             entry, part = input_entry
             if part == 'wide':
@@ -83,9 +93,11 @@ class WideAndDeep(BaseEstimator, RegressorMixin):
                     Dense(1, activation=self.deep_activation,
                           name=name)(entry))
 
+        # The so-called Concatenation Layer
         concat_tensor = Concatenate(
             axis=-1, name='concat_wide_and_deep')(concat_list)
 
+        # Check if Batch Normalization and Activation Function are set
         if self.batch_normalization:
             use_bias = False
             activation = None
@@ -93,11 +105,16 @@ class WideAndDeep(BaseEstimator, RegressorMixin):
             use_bias = True
             activation = self.dense_activation
 
+        # Make sure dense layers are same size as previous (or total input list, total input layer)
         if self.dense_output_size:
             dense_output_size = self.dense_output_size
         else:
             dense_output_size = len(input_list)
 
+        # Dense layer processing (from concat layer) with 
+        # (optional+) Batch Normalization
+        # (optional+) Activation Function (Relu)
+        # (optional-) Dropout rate
         dense_layer = concat_tensor
         for i in range(1, self.num_dense_layer + 1):
             dense_layer = Dense(
@@ -115,12 +132,14 @@ class WideAndDeep(BaseEstimator, RegressorMixin):
                 dense_layer = Dropout(
                     self.dropout_rate, name='dropout-' + str(i))(dense_layer)
 
+        # FINALMENTE...
         output = Dense(
             1,
             activation=self.output_activation,
             name='output',
             use_bias=use_bias)(dense_layer)
 
+        # Compile model using MSE, Adam and MAE
         model = Model(inputs=input_list, outputs=output)
         model.compile(
             loss=self.loss, optimizer=self.optimizer, metrics=self.metrics)
@@ -134,6 +153,7 @@ class WideAndDeep(BaseEstimator, RegressorMixin):
             features.append(feature)
         return features
 
+    # Trains the model
     def fit(self, x, y=None):
         if self._model:
             raise NotImplementedError('Refitting the model is not implemented')
@@ -144,6 +164,7 @@ class WideAndDeep(BaseEstimator, RegressorMixin):
         self._model.fit(
             x=features, y=y, batch_size=self.batch_size, epochs=self.epochs)
 
+    # Testing for the model
     def predict(self, x):
         features = self._split_features(x)
         return self._model.predict(features)

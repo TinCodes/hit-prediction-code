@@ -14,6 +14,7 @@ BB_PATH = '/storage/nas3/datasets/music/billboard'
 MSD_PATH = '/storage/nas3/datasets/music/millionsongdataset'
 
 
+# Implements Click: a package for creating command line interfaces 
 @click.group()
 @click.option(
     '--path', default='.', help='The path where the results are stored.')
