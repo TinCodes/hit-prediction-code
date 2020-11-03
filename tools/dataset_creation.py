@@ -9,9 +9,9 @@ import numpy as np
 
 import pandas as pd
 
-RESULT_PATH = '.'
-BB_PATH = '/storage/nas3/datasets/music/billboard'
-MSD_PATH = '/storage/nas3/datasets/music/millionsongdataset'
+RESULT_PATH = './results/'
+BB_PATH = './storage/'
+MSD_PATH = './storage/'
 
 
 # Implements Click: a package for creating command line interfaces 
