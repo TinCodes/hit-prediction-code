@@ -118,7 +118,7 @@ def _combine_features(combine_function):
 
 
 def _combine_ll_features(msd_ids):
-    features_path = MSD_PATH + '/msd_audio_features'  # noqa E501
+    features_path = MSD_PATH  # noqa E501
 
     ll_features = pd.DataFrame()
     for msd_id in msd_ids:
@@ -135,7 +135,7 @@ def _combine_ll_features(msd_ids):
 
 
 def _combine_hl_features(msd_ids):
-    features_path = MSD_PATH + '/msd_audio_features'  # noqa E501
+    features_path = MSD_PATH  # noqa E501
 
     hl_features = pd.DataFrame()
     for msd_id in msd_ids:
@@ -284,7 +284,7 @@ def read_msd_unique_tracks():
 
 
 def read_msd_feature_files():
-    file_path = MSD_PATH + '/msd_audio_features/file_ids.csv'
+    file_path = MSD_PATH + '/file_ids.csv'
 
     return pd.read_csv(file_path, header=None, names=['msd_id'])
 
