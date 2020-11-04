@@ -6,10 +6,10 @@ from dataloaders import MsdBbLoader
 def main():
     loader = MsdBbLoader(
         hits_file_path=
-        '/storage/nas3/datasets/music/billboard/msd_bb_matches.csv',
+        './storage/msd_bb_matches.csv',
         non_hits_file_path=
-        '/storage/nas3/datasets/music/billboard/msd_bb_non_matches.csv',
-        features_path='/storage/nas3/datasets/music/billboard',
+        './storage/msd_bb_non_matches.csv',
+        features_path='./tools',
         non_hits_per_hit=1,
         features=['hl'],
         label='weeks',
